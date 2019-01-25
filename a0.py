@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Sep  8 21:15:58 2018
-
 @author: Darshan
 """
 #!/usr/bin/env python2
@@ -17,35 +16,19 @@ def count_on_row(board, row):
 def count_on_col(board, col):
     return sum( [ row[col] for row in board ] ) 
 
-#def count_on_diag(board, row, col):
-#    count = 0
-#    for r in range(0,N):
-#        for c in range(0, N):
-#            if (r != row and c != col and ((row - r)*(row - r) == (col - c)*(col - c))):
-#                if (board[r][c]):
-#                    count+=1
-#    return count
-
+# Count # of pieces on both diagonals
 def count_on_diag(board, row, col):
     count = 0
     for i in range(1, N):
-        #if(row != row - i and col != col - i):
         if((row - i) in range(0, N) and (col - i) in range(0, N) and board[row-i][col-i] == 1):
             count += 1
         if((row - i) in range(0, N) and (col + i) in range(0, N) and board[row-i][col+i] == 1):
             count += 1
     return count
 
+# Count # of pieces on plausible positions of knight from the input position	
 def count_on_knight_pos(board, row, col):
     count = 0
-    #if((row - 2) in range(0, N) and (col - 1) in range(0, N) and board[row-2][col-1] == 1):
-    #    count += 1
-    #if((row - 2) in range(0, N) and (col + 1) in range(0, N) and board[row-2][col+1] == 1):
-    #    count += 1
-    #if((row - 1) in range(0, N) and (col - 2) in range(0, N) and board[row-1][col-2] == 1):
-    #    count += 1
-    #if((row - 1) in range(0, N) and (col + 2) in range(0, N) and board[row-1][col+2] == 1):
-    #    count += 1
     if((row + 2) in range(0, N) and (col - 1) in range(0, N) and board[row+2][col-1] == 1):
         count += 1
     if((row + 2) in range(0, N) and (col + 1) in range(0, N) and board[row+2][col+1] == 1):
@@ -79,7 +62,6 @@ def printable_board(board):
             board_string = board_string + char + " "
         board_string = board_string + "\n"
     return board_string
-    #return "\n".join([ " ".join([ "R" if col else "_" for col in row ]) for row in board])
 
 # Add a piece to the board at the given position, and return a new board (doesn't change original)
 def add_piece(board, row, col):
@@ -120,7 +102,6 @@ def solve(initial_board):
         #successor = successors(fringe.pop(0)) # fringe.pop(0) means this is implementing BFS
         if successor != None :
             for s in successor:
-                #print (str(printable_board(s)) + "\n")
                 if is_goal(s):
                     return(s)
                 fringe.append(s)
@@ -129,12 +110,9 @@ def solve(initial_board):
 # This are inputs required to execute this program whcih are passed through command line arguments.
 inputs = sys.argv 
 # N is size of board, T is type of execution, n is number of block positions of board
-N = input("Enter a number: ")
-#N = inputs[0]
-T = raw_input("Enter type (nrook/nqueen/nknight): ")
-#T = inputs[1]
-n = input("Enter number of block cells: ")
-#n = inputs[2]
+N = inputs[0]
+T = inputs[1]
+n = inputs[2]
 
 if T not in ["nrook", "nqueen", "nknight"]:
     sys.exit("Entered type is invalid...")
