@@ -1,0 +1,45 @@
+Introduction
+------------
+
+Imagine that you have an empty chessboard of size N { i.e., an N * N grid of squares. Our goal is to find a way of placing N queens on the board such that no two queens share the same row, column, or diagonal { in other words, so that no queen could \take" any other queen. This is called the N-queens problem. For example, when N = 1, there's a very easy solution (the queen goes on the only square!). For N = 2, there's no solution at all, nor is there a solution for N = 3. But there are solutions for larger boards, including the standard chessboard with N = 8.
+
+But let's first start with a related, simpler problem: N-rooks. N-rooks is like N-queens except that the goal is to place N rooks so that no two of them are in the same row or column. This is a lot easier because there are many more possible solutions, since we don't need to worry about diagonals. (For example, there is a solution for N = 2 and N = 3.)
+
+How do we pose this as search? We'll need to define the five parts of our abstraction, and there are various ways of doing this. To see this, think about how you might solve the problem as a human. You could start with an empty board and try to add one piece at a time, each time trying to add the piece such that it does not concict with any existing pieces. Or you could randomly arrange N rooks on the board and in each step, 1 move one of the pieces to a vacant spot until none of the pieces concict with one another. You could even fill the board with N2 pieces and then remove one at a time until you are left with N that do not concict. Each of these strategies would probably work, and each one involves defining the abstraction (state space, start state, goal state, successor, cost function) in a different way.
+
+What to do
+----------
+
+1. Write down the precise abstraction that the program is using and include it in your report. In other words, what is the set of valid states, the successor function, the cost function, the goal state definition, and the initial state?
+
+2. Modify the code to switch to BFS instead. What happens when you run the code for different values of N now, and why?
+
+3. The successor function in the code is defined in a very simplistic way, including generating states that have N+1 rooks on them, and allowing \moves" that involve not adding a rook at all. Create a new successors() function called successors2() that fixes these two problems. Now does the choice of BFS or DFS matter? Why or why not?
+
+4. Even with the modifications so far, N=8 is still very slow. Instead of allowing the successor function to place a piece anywhere on the board, let's define a successor that is much more orderly: it's only allowed to add a piece to the leftmost column of the board that is currently empty. (For example, if the board is empty, the rook has to be placed in the first column; if there are 4 rooks on the board, the next one has to go in the fifth column, etc.) Modify the code to implement this alternative abstraction with a successors function called successors3(). Feel free to make other code improvements as well.
+What is the largest value of N your new version can run on within about 1 minute?
+Tip: In Linux, you can use the timeout command to kill a program after a specified time period:
+timeout 1m ./nrooks.py N
+
+5. Now, create a new program, a0.py, with several additional features, including the ability to solve both the N-rooks and N-queens problems, and the ability to solve these problems when some of the squares of the board are not available (meaning that you cannot place a piece on them). Your program must 2 accept at least 3 arguments. The first one is either nrook or nqueen, which signifies the problem type. The second is the number of rooks or queens (i.e., N). The third argument represents the number of unavailable positions. The remaining arguments encode which positions are unavailable, using row-column coordinates and assuming a coordinate system where (1,1) is at the top-left of the board. Taking the 7-rooks problem with position (1, 1) unavailable as an example, we might run:
+[<>djcran@tank ~]$ ,.a0.py nrook 7 1 1 1
+which means that one square is unavailable, and it is at row 1 and column 1. One possible result could be:
+[<>djcran@tank ~]$ ./a0.py nrook 7 1 1 1
+X R _ _ _ _ _
+R _ _ _ _ _ _
+_ _ R _ _ _ _
+_ _ _ R _ _ _
+_ _ _ _ R _ _
+_ _ _ _ _ R _
+_ _ _ _ _ _ R
+where R indicates the position of a rook, underscore marks an empty square, and X shows the unavailable position. Or for the 8-queens problem with (1, 2) and (1,8) unavailable, one possible result could be:
+[<>djcran@tank ~]$ ./a0.py nqueen 8 2 1 2 1 8
+_ X _ _ Q _ _ X
+_ _ _ _ _ _ Q _
+_ Q _ _ _ _ _ _
+_ _ _ _ _ Q _ _
+_ _ Q _ _ _ _ _
+Q _ _ _ _ _ _ _
+_ _ _ Q _ _ _ _
+_ _ _ _ _ _ _ Q
+where the Q's indicate the positions of queens on the board. As a special case, there can be 0 unavailable squares, in which case only exactly three arguments are given to a0.py. Please print only the solution in exactly the above format and nothing else. 
